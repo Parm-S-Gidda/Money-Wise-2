@@ -1,0 +1,55 @@
+.monthsTitleDiv{
+
+    display: flex;
+    width: 90%;
+    max-width: 1250px;
+    justify-content: space-between;
+    padding-bottom: 20px;
+}
+
+.monthsYear{
+    margin: 0;
+    padding: 0;
+    font-weight: 600; 
+    font-size: clamp(10px, 2vw, 35px);
+}
+
+.forwardBack{
+
+    display: block;
+    align-content: end;
+    padding-right: 5px;
+   
+}
+
+.forwardBackButton{
+
+    border: none;
+    padding: 5px 10px 5px 10px;
+    font-weight: 500;
+    font-size: clamp(5px, 1.5vw, 20px);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-color: rgb(229, 230, 230);
+   
+
+    
+
+}
+
+.forwardBackButton:hover{
+    background-color: rgb(206, 212, 212);
+  
+}
+
+#back{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+#forward{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+
+

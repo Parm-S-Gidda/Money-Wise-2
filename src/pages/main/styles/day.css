@@ -1,0 +1,21 @@
+
+.masterDiv{
+
+    
+    width: 100%;
+    aspect-ratio: 1 /1;
+    border: 1px solid rgb(190, 188, 188);
+    border-radius: 5%;
+    background-color: rgb(249, 248, 246);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 1s smooth;
+    cursor: pointer;
+  
+}
+
+.masterDiv:hover{
+
+    transform: scale(1.1);
+    background-color: rgb(234, 237, 237);
+
+}

@@ -1,0 +1,27 @@
+.dayTitleDiv{
+
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    
+
+}
+
+.DaysTitle{
+
+    display: grid;
+    grid-template-columns: repeat(7,  1fr);
+    gap: 20px;
+    font-size: 2vw;
+    
+    font-weight: 600;
+    width: 90%;
+    max-width: 1250px;
+    padding-bottom: 10px;
+    
+
+}
+
+.DaysTitle {
+    font-size: clamp(8px, 2vw, 25px);
+  }

@@ -1,0 +1,31 @@
+
+  
+  .mainDiv {
+    width: 100%;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+ 
+  }
+
+  .allDays{
+    display: grid;
+    grid-template-columns: repeat(7,  1fr);
+  
+    width: 90%;
+    max-width: 1250px;
+   
+    height: fit-content;
+    gap: 10px;
+ 
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html{
+    color: rgb(114, 114, 116);
+  }
