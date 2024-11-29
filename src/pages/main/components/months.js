@@ -1,16 +1,20 @@
 import '../styles/months.css'
 
-function Months() {
+const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
+
+function Months({previousMonth, nextMonth, displayedMonth, displayedYear}) {
+    
+
     return (
       <div className="monthsTitleDiv">
 
         <div className="months">
-            <h1 className="monthsYear">November</h1>
-            <h1 className="monthsYear">2024</h1>
+            <h1 className="monthsYear">{months[displayedMonth]}</h1>
+            <h1 className="monthsYear">{displayedYear}</h1>
         </div>
         <div className="forwardBack">
-            <button id="back" className="forwardBackButton">{"<"} </button>
-            <button id="forward" className="forwardBackButton">{">"}</button>  
+            <button id="back" className="forwardBackButton" onClick={previousMonth}>{"<"} </button>
+            <button id="forward" className="forwardBackButton" onClick={nextMonth}>{">"}</button>  
       </div>
         
         

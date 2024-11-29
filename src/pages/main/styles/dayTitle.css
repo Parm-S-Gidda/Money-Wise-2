@@ -15,7 +15,7 @@
     font-size: 2vw;
     
     font-weight: 600;
-    width: 90%;
+    width: 70%;
     max-width: 1250px;
     padding-bottom: 10px;
     
@@ -23,5 +23,5 @@
 }
 
 .DaysTitle {
-    font-size: clamp(8px, 2vw, 25px);
+    font-size: clamp(5px, 1.7vw, 25px);
   }
