@@ -1,27 +1,6 @@
 
-.masterDiv{
 
-    
-    width: 100%;
-    aspect-ratio: 1 /1;
-    border: 1px solid rgb(190, 188, 188);
-    border-radius: 5%;
-    background-color: rgb(249, 248, 246);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 1s smooth;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    
-  
-}
 
-.masterDiv:hover{
-
-    transform: scale(1.1);
-    background-color: rgb(234, 237, 237);
-
-}
 
 .dateDiv{
 
@@ -30,31 +9,22 @@
 
 }
 
-.placeHolderDay{
 
-    width: 100%;
-    aspect-ratio: 1 /1;
-    border: 1px solid rgb(190, 188, 188);
-    border-radius: 5%;
-    background-color: rgb(122, 120, 117);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-
-}
 
 .numberDivRegular{
 
-    padding-left: 12%;
-    padding: 10%;
+    padding-left: 17%;
+    padding-top: 12%;
     font-size: clamp(10px, 1vw, 1rem);
     
 }
 
 .numberDivToday{
-    margin: 7%;
-    margin-top: 5%;
+    margin-left: 12%;
+    margin-top: 7%;
     aspect-ratio: 1 / 1;
     font-size: clamp(10px, 1vw, 1rem);
-    background-color: rgb(154, 147, 147);
+    background-color: rgb(161, 153, 153);
     width: fit-content;
     
     border-radius: 50%;
@@ -62,7 +32,7 @@
     justify-content: center;
     align-items: center;
     color: white;
-    padding: 3% 5% 5% 5%;
+    padding: 5% 5% 5% 5%;
 
 }
 
@@ -72,56 +42,92 @@
     
 }
 
+
+.placeHolderDay{
+
+    width: 100%;
+    aspect-ratio: 1 /1;
+    border: 1px solid rgb(190, 188, 188);
+    border-radius: 25%;
+    background-color: rgb(122, 120, 117);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+
+}
+
+.masterDiv{
+
+    
+    width: 100%;
+    aspect-ratio: 1 /1;
+    border-radius: 25%;
+    background-color: rgb(222, 218, 209);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 1s smooth;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    
+  
+}
+
+.masterDiv:hover{
+
+    transform: scale(1.1);
+    background-color: rgb(197, 193, 186);
+
+}
+
 .masterDivPositive{
 
     width: 100%;
     aspect-ratio: 1 /1;
-    border: 1px solid rgb(42, 170, 19);
-    border-radius: 5%;
-    background-color: rgb(77, 196, 37);
+    border-radius:  25%;
+    background-color: rgb(159, 236, 141);
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 1s smooth;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     color: white;
+    position: relative;
 
 }
 
 .masterDivPositive:hover{
     transform: scale(1.1);
-    background-color: rgb(51, 155, 17);
+    background-color: rgb(131, 211, 104);
 }
 
 .masterDivNegative{
 
     width: 100%;
     aspect-ratio: 1 /1;
-    border: 1px solid rgb(220, 62, 62);
-    border-radius: 5%;
-    background-color: rgb(187, 59, 34);
+    border-radius:  25%;
+    background-color: rgb(204, 91, 68);
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 1s smooth;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     color: white;
+    position: relative;
 
 }
 
 .masterDivNegative:hover{
     transform: scale(1.1);
-    background-color: rgb(157, 30, 30);
+    background-color: rgb(185, 48, 48);
 
 }
 
 .numberDivTodayPositive{
 
-    margin: 7%;
-    margin-top: 5%;
+    margin-left: 12%;
+    margin-top: 7%;
     aspect-ratio: 1 / 1;
     font-size: clamp(10px, 1vw, 1rem);
-    background-color: rgb(44, 133, 15);
+    background-color: rgb(74, 192, 35);
     width: fit-content;
     
     border-radius: 50%;
@@ -129,17 +135,17 @@
     justify-content: center;
     align-items: center;
     color: white;
-    padding: 3% 5% 5% 5%;
+    padding: 5% 5% 5% 5%;
 
 }
 
 .numberDivTodayNegative{
 
-    margin: 7%;
-    margin-top: 5%;
+    margin-left: 12%;
+    margin-top: 7%;
     aspect-ratio: 1 / 1;
     font-size: clamp(10px, 1vw, 1rem);
-    background-color: rgb(143, 32, 32);
+    background-color: rgb(175, 49, 49);
     width: fit-content;
     
     border-radius: 50%;
@@ -147,6 +153,6 @@
     justify-content: center;
     align-items: center;
     color: white;
-    padding: 3% 5% 5% 5%;
+    padding: 5% 5% 5% 5%;
 
 }

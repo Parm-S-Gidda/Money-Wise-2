@@ -12,9 +12,9 @@
 
   .allDays{
     display: grid;
-    grid-template-columns: repeat(7,  0.5fr);
+    grid-template-columns: repeat(7,  1fr);
   
-    width: 70%;
+    width: 60%;
     max-width: 1250px;
    
     height: fit-content;

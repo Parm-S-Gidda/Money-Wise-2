@@ -44,13 +44,13 @@ function Main() {
         const realDayVal = i - firstDay;
 
         if(realDayVal % 3 == 0){
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Positive"} onClick={() => handleDayClick()}/>);
+          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} onClick={() => handleDayClick()}/>);
         }
         else if(realDayVal % 2 == 0){
           newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} onClick={() => handleDayClick()}/>);
         }
         else{
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} onClick={() => handleDayClick()}/>);
+          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} onClick={() => handleDayClick()}/>);
         }
         
       }
