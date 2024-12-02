@@ -1,0 +1,170 @@
+
+.addEntryMain{
+
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 3%;
+
+ 
+}
+
+#entryTitle{
+    font-size: 1.5rem;
+}
+
+#amountInputDiv{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+#descriptionInputDiv{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.inputsDiv{
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+    color: rgb(65, 64, 64);
+    margin-top: 5%;
+  
+
+}
+
+.linebreak{
+
+    width: 95%;
+    height: 1px;
+    background-color: rgb(206, 203, 203);
+
+}
+
+#descriptionInput, #amountInput{
+    height: fit-content;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(235, 232, 232);
+    padding: 10px 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    color: rgb(126, 122, 122);
+    font-size: 1.2rem;
+    width: 100%;
+
+
+
+}
+
+#descriptionInput:focus{
+    outline: none;
+}
+
+#amountInput:focus{
+    outline: none;
+}
+
+#descriptionInputDiv, #amountInputDiv{
+    height: 100%;
+}
+
+#amountLabel, #descriptionLabel{
+    font-weight: 600;
+    padding-left: 8px;
+}
+
+#expenseIncomeButtonDiv{
+
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+    position: relative;
+    
+}
+
+#incomeButton{
+    
+    width: 25%;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;    
+}
+
+#expenseButton{
+
+    width: 25%;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+#incomeButton:hover, #incomeButton.active {
+    background-color: rgb(235, 232, 232);
+    color: rgb(87, 83, 83);
+}
+
+#expenseButton:hover, #expenseButton.active {
+    background-color: rgb(235, 232, 232);
+    color: rgb(87, 83, 83);
+}
+
+.active {
+    background-color: rgb(69, 65, 65);
+    color: white;
+    border: none
+   
+}
+
+
+.inactive {
+    background-color: white;
+    color: rgb(69, 65, 65);
+    border: none
+}
+
+#addButton{
+    
+    width:25%;
+    padding: 5px 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: rgb(235, 232, 232);
+    border: none;
+    color: rgb(87, 83, 83);
+    border-radius: 30px;
+    cursor: pointer;
+
+
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#addButton:hover{
+
+    background-color: rgb(208, 204, 204);
+
+ 
+}
+
+#addButtonDiv{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 4%;
+ 
+}
+

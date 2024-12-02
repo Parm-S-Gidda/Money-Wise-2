@@ -21,7 +21,9 @@ function Main() {
   const [displayedYear, setDisplayedYear] = useState(todayYear);
   const [displayedMonth, setDisplayedMonth] = useState(todayMonth);
   const [displayedFullMonth, setDisplayedFullMonth] = useState([]);
+  const [displayedDay, setDisplayedDay] = useState(1);
   const [isFlex, setIsFlex] = useState(false);
+  const [clickedDayKey, setClickedDayKey] = useState(1);
 
   useEffect(() => {
 
@@ -31,10 +33,7 @@ function Main() {
 
     let newFullMonth = [];
 
-    const handleDayClick = () => {
- 
-      setIsFlex((prevIsFlex) => !prevIsFlex);
-    };
+
 
 
     for (let i = 1; i <= firstDay + daysInMonth; i++) {
@@ -42,15 +41,22 @@ function Main() {
         newFullMonth.push(<Day key={i} dayType={"PlaceHolder"} />);
       } else {
         const realDayVal = i - firstDay;
+        setDisplayedDay(realDayVal)
+
+        const handleDayClick = () => {
+ 
+          setIsFlex((prevIsFlex) => !prevIsFlex);
+          setClickedDayKey(realDayVal)
+        };
 
         if(realDayVal % 3 == 0){
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} onClick={() => handleDayClick()}/>);
+          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={100} onClick={() => handleDayClick()}/>);
         }
         else if(realDayVal % 2 == 0){
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} onClick={() => handleDayClick()}/>);
+          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} balance={-100} onClick={() => handleDayClick()}/>);
         }
         else{
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} onClick={() => handleDayClick()}/>);
+          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={100} onClick={() => handleDayClick()}/>);
         }
         
       }
@@ -106,9 +112,15 @@ function Main() {
 
         <div className="allDays">{displayedFullMonth}</div>
 
-        <div className='background' style={{ display: isFlex ? 'flex' : 'none' }} onClick={handleDayClick}>
+        <div
+  className='background'
+  style={{ display: isFlex ? 'flex' : 'none' }}
+  onClick={() => {
+    if (!isFlex) handleDayClick(); 
+  }}
+>
 
-          <AddInfo></AddInfo>
+          <AddInfo displayedDay={clickedDayKey} displayedMonth={displayedMonth} displayedYear={displayedYear} />
         </div>
 
         
