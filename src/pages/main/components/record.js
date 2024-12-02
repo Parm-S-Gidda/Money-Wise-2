@@ -1,25 +1,35 @@
-import '../styles/record.css'
+import '../styles/record.css';
+import { useState, useEffect } from 'react';
 
-const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
+function Record({record, removeRecord, index, removeFromTotal}) {
+  const [value, setValue] = useState(""); 
 
-function Record() {
+  useEffect(() => {
+   
+      if (record.amount >= 0) {
+        setValue("+$" + record.amount.toFixed(2));
+      } else {
+        setValue("-$" + Math.abs(record.amount).toFixed(2));
+      }
 
-    return (
-      <div className="recordMainDiv">
+  }, [record.amount]);
 
-        <div className='deleteButtonDiv'>
-            <button className='deleteButton'>X</button>
-        </div>
+  const removeIndex = () => {
 
-        <div className='valueDiv'>+$500</div>
-
-        <div className='discription'>Pizza Party</div>
-
-     
-
-      
-      </div>
-    );
+    console.log("remove at: " + index)
+    removeRecord(index)
+    removeFromTotal(record.amount)
   }
-  
-  export default Record;
+
+  return (
+    <div className="recordMainDiv">
+      <div className="deleteButtonDiv">
+        <button className="deleteButton" onClick={removeIndex}>X</button>
+      </div>
+      <div className="valueDiv">{value}</div>
+      <div className="descriptionDiv">{record.description}</div>
+    </div>
+  );
+}
+
+export default Record;

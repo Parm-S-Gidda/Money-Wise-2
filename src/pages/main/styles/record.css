@@ -43,12 +43,15 @@
     justify-content: center;
 }
 
-.discription{
+.descriptionDiv{
     border-left: 1px solid rgb(223, 217, 217);
     padding-left: 2%;
     padding-right: 2%;
-    width: 25%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+   
+
+
 }
