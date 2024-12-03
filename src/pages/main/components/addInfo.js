@@ -7,7 +7,7 @@ const months = ["January","February", "March","April","May","June","July","Augus
 
 
 
-function AddInfo({displayedDay, displayedMonth, displayedYear}) {
+function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
 
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const date = new Date(displayedYear, displayedMonth, displayedDay);
@@ -33,6 +33,11 @@ function AddInfo({displayedDay, displayedMonth, displayedYear}) {
   const removeFromTotal = (newAmount) => {
 
     setTotal(prevTotal => prevTotal - newAmount);
+  };
+
+  const savePressed = () => {
+
+    cancleClicked();
   };
 
    
@@ -67,8 +72,8 @@ function AddInfo({displayedDay, displayedMonth, displayedYear}) {
           <div className='allButtonsDiv'>
 
               <div className='saveCancelButtons'>
-                <button id='saveButton' className='addInfoButtons'>Save</button>
-                <button id='cancelButton' className='addInfoButtons'>Cancel</button>
+                <button id='saveButton' className='addInfoButtons' onClick={savePressed}>Save</button>
+                <button id='cancelButton' className='addInfoButtons' onClick={cancleClicked}>Cancel</button>
               </div>
              
               

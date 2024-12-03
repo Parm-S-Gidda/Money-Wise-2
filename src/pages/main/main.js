@@ -72,6 +72,10 @@ function Main() {
     setIsFlex((prevIsFlex) => !prevIsFlex);
   };
 
+  const handleCancledClicked = () => {
+    setIsFlex(false);
+  };
+
   //go to next month
   const increaseMonth = () => {
 
@@ -112,15 +116,9 @@ function Main() {
 
         <div className="allDays">{displayedFullMonth}</div>
 
-        <div
-  className='background'
-  style={{ display: isFlex ? 'flex' : 'none' }}
-  onClick={() => {
-    if (!isFlex) handleDayClick(); 
-  }}
->
+        <div className='background' style={{ display: isFlex ? 'flex' : 'none' }} onClick={() => {if (!isFlex) handleDayClick(); }}>
 
-          <AddInfo displayedDay={clickedDayKey} displayedMonth={displayedMonth} displayedYear={displayedYear} />
+          <AddInfo displayedDay={clickedDayKey} displayedMonth={displayedMonth} displayedYear={displayedYear} cancleClicked={handleCancledClicked} />
         </div>
 
         

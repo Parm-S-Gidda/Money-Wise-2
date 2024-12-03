@@ -68,7 +68,9 @@
     cursor: pointer;
     background-color: rgb(222, 220, 220);
     transition: all 0.2s ease;
-    color: rgb(109, 108, 108);;
+    color: rgb(109, 108, 108);
+    padding-top: 2%;
+    padding-bottom: 2%;
     
 }
 
