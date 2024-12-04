@@ -40,7 +40,7 @@ function AddEntry({ onAddRecord,  addToTotal}) {
             timeAdded
         };
 
-        onAddRecord(newRecord, timeAdded);
+        onAddRecord(newRecord);
         addToTotal(parsedAmount)
 
      

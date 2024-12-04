@@ -3,7 +3,7 @@ import AddEntry from './addEntry';
 import Record from './record';
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../config/firestore';
-import { getFirestore, doc, collection, setDoc, getDoc, addDoc } from "firebase/firestore"; 
+import { getFirestore, doc, collection, setDoc, getDocs, deleteDoc, query, getDoc} from "firebase/firestore"; 
 
 const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
 
@@ -19,11 +19,48 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
   const [removeList, setRemoveList] = useState([]);
   const [addList, setAddList] = useState([]);
 
-  const addRecord = (newRecord, time) => {
+  let epochDate = Math.floor(Date.UTC(displayedYear, displayedMonth, displayedDay, 0, 0, 0) / 1000);
+
+  useEffect(() => {
+    getEntries();
+    console.log("lkhe;lkj")
+  }, [epochDate]);
+
+  async function getEntries(){
+
+    const entriesRef = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries");
+    const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
+
+    const date = await getDoc(dateRef);
+
+    if(date.exists()){
+
+      setTotal(date.data().entriesSum);
+    }
+
+    const q = query(entriesRef);
+
+    try {
+      const querySnapshot = await getDocs(q);
+      const entries = querySnapshot.docs.map(doc => doc.data()); 
+
+      setRecords(entries);
+      console.log(entries); 
+      
+   
+    } catch (error) {
+      console.error("Error fetching entries: ", error);
+    }
+
+  }
+  
+ 
+
+  const addRecord = (newRecord) => {
     setRecords((prevRecords) => [...prevRecords, newRecord]);
 
-    setAddList((prevList) => [...prevList, time]);
-    console.log("Add at time: " + time)
+    setAddList((prevList) => [...prevList, newRecord]);
+  
   };
 
   const removeRecord = (indexToRemove, time) => {
@@ -49,23 +86,83 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
   const savePressed = () => {
 
     saveEntriesToDB()
+    removeEntriesFromDB()
+    cancleClicked()
+
+    setAddList([]);
+    setRemoveList([]);
+  //  setTotal(0);
+   // setRecords([]);
+    epochDate = 0;
   };
 
-  async function saveEntriesToDB() {
-    const entriesRef = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", "5", "entries");
-  
-    
-    for (const timeAdded of addList) {
+  const cancelPressed = () => {
 
-      const entryRef = doc(entriesRef); 
+    setAddList([]);
+    setRemoveList([]);
+   // setTotal(0);
+   // setRecords([]);
+
+    cancleClicked();
+    epochDate = 0;
+
+  }
+
+  async function saveEntriesToDB() {
+    const entriesRef = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries");
+  
+    //add the sum of all the entries to the date
+    const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
+    await setDoc(dateRef, {
+      entriesSum: total,  
+    }, { merge: true }) 
+    .catch((error) => {
+      console.error("Error adding Entry Sum document: ", error);
+    });
+    
+    //Add entries to the date
+    for (const record of addList) {
+
+      const entryRef = doc(entriesRef, record.timeAdded.toString()); 
   
       await setDoc(entryRef, {
-        timeAdded: timeAdded, 
-        value: 500,
-        description: "Pizza"
+        amount: record.amount,
+       description: record.description, 
+       timeAdded: record.timeAdded,
+       date: displayedYear + " " + displayedMonth + ", " + displayedDay
       }).catch((error) => {
         console.error("Error adding document: ", error);
       });
+    }
+      
+  }
+
+  async function removeEntriesFromDB() {
+
+    //add the sum of all the entries to the date 
+    const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
+
+    await setDoc(dateRef, {
+      entriesSum: total,  
+    }, { merge: true }) 
+    .catch((error) => {
+      console.error("Error adding Entry Sum document: ", error);
+    });
+    
+  
+    //remove the entries from the date
+    for (const timeAdded of removeList) {
+
+      let entryRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries", timeAdded.toString());
+      
+      try {
+        await deleteDoc(entryRef);
+        console.log("Document successfully deleted!");
+      } catch (error) {
+        console.error("Error removing document: ", error);
+      }
+        
+      
     }
   }
 
@@ -102,7 +199,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
 
               <div className='saveCancelButtons'>
                 <button id='saveButton' className='addInfoButtons' onClick={savePressed}>Save</button>
-                <button id='cancelButton' className='addInfoButtons' onClick={cancleClicked}>Cancel</button>
+                <button id='cancelButton' className='addInfoButtons' onClick={cancelPressed}>Cancel</button>
               </div>
              
               
