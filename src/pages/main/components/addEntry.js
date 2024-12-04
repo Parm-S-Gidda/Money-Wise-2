@@ -14,7 +14,7 @@ function AddEntry({ onAddRecord,  addToTotal}) {
         e.preventDefault();
 
         let parsedAmount = parseFloat(parseFloat(amount).toFixed(2));
-        
+        const timeAdded = Math.floor(new Date().getTime() / 1000);
 
         if (isNaN(parsedAmount) || parsedAmount <= 0) {
             alert("Please input an amount greater than $0.00");
@@ -31,17 +31,22 @@ function AddEntry({ onAddRecord,  addToTotal}) {
             parsedAmount *= -1
         }
 
+       
+ 
+
         const newRecord = {
             amount: parsedAmount, 
-            description
+            description, 
+            timeAdded
         };
 
-        onAddRecord(newRecord);
+        onAddRecord(newRecord, timeAdded);
         addToTotal(parsedAmount)
 
      
         setAmount("");
         setDescription("");
+       
     };
 
     return (

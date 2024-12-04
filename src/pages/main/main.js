@@ -5,6 +5,8 @@ import DayTitle from './components/dayTitle';
 import Months from './components/months';
 import React, { useState, useEffect  } from 'react';
 import AddInfo from './components/addInfo';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../config/firestore';
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
@@ -63,9 +65,21 @@ function Main() {
     }
 
     setDisplayedFullMonth(newFullMonth)
+    test()
 
     
   }, [displayedMonth, displayedYear]);
+
+  const test = async () => {
+
+    const querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  console.log(doc.id, " => ", doc.data());
+});
+
+
+  }
 
   const handleDayClick = () => {
  

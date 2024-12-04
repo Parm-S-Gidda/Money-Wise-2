@@ -17,7 +17,7 @@ function Record({record, removeRecord, index, removeFromTotal}) {
   const removeIndex = () => {
 
     console.log("remove at: " + index)
-    removeRecord(index)
+    removeRecord(index, record.timeAdded)
     removeFromTotal(record.amount)
   }
 
