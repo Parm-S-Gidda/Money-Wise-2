@@ -133,7 +133,7 @@ function Main() {
 
         <div className='background' style={{ display: isFlex ? 'flex' : 'none' }} onClick={() => {if (!isFlex) handleDayClick(); }}>
 
-          <AddInfo displayedDay={clickedDayKey} displayedMonth={displayedMonth} displayedYear={displayedYear} cancleClicked={handleCancledClicked} />
+          <AddInfo displayedDay={clickedDayKey} displayedMonth={displayedMonth} displayedYear={displayedYear} isFlex={isFlex} cancleClicked={handleCancledClicked} />
         </div>
 
         

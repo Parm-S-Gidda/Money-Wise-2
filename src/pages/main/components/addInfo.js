@@ -4,12 +4,13 @@ import Record from './record';
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../config/firestore';
 import { getFirestore, doc, collection, setDoc, getDocs, deleteDoc, query, getDoc} from "firebase/firestore"; 
+import loadingImg from '../../../images/loading.gif'
 
 const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
 
 
 
-function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
+function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, isFlex}) {
 
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const date = new Date(displayedYear, displayedMonth, displayedDay);
@@ -18,13 +19,18 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
   const [total, setTotal] = useState(0)
   const [removeList, setRemoveList] = useState([]);
   const [addList, setAddList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   let epochDate = Math.floor(Date.UTC(displayedYear, displayedMonth, displayedDay, 0, 0, 0) / 1000);
 
   useEffect(() => {
-    getEntries();
-    console.log("lkhe;lkj")
-  }, [epochDate]);
+
+    if(isFlex){
+      getEntries();
+      console.log("Fetching Entries")
+    }
+
+  }, [displayedDay, isFlex]);
 
   async function getEntries(){
 
@@ -46,6 +52,8 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
 
       setRecords(entries);
       console.log(entries); 
+      setIsLoading(false)
+  
       
    
     } catch (error) {
@@ -87,24 +95,28 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
 
     saveEntriesToDB()
     removeEntriesFromDB()
-    cancleClicked()
 
     setAddList([]);
     setRemoveList([]);
-  //  setTotal(0);
-   // setRecords([]);
-    epochDate = 0;
+
+    cancleClicked()
+
+
+   setTotal(0);
+   setRecords([]);
+   setIsLoading(true)
+
   };
 
   const cancelPressed = () => {
 
     setAddList([]);
     setRemoveList([]);
-   // setTotal(0);
-   // setRecords([]);
-
+   setTotal(0);
+    setRecords([]);
+    setIsLoading(true)
     cancleClicked();
-    epochDate = 0;
+    
 
   }
 
@@ -154,6 +166,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
     for (const timeAdded of removeList) {
 
       let entryRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries", timeAdded.toString());
+      console.log("Imd deleting on this Day: " + epochDate + " at thsi time: " + timeAdded )
       
       try {
         await deleteDoc(entryRef);
@@ -170,54 +183,76 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked}) {
     
 
     return (
-      <div className="addInfoMainDiv">
 
-        <div className='addInfoDiv'>
+      <>
 
-          <h1 id="addInfoDate">{daysOfWeek[dayIndex]} {months[displayedMonth]} {displayedDay}, {displayedYear}</h1>
-
-          <AddEntry onAddRecord={addRecord} addToTotal={addToTotal}/>
-
-          <div id="entryTitleDiv">
-            <h1 id='valueEntry'>Value</h1>
-            <h1 id='descriptionEntry'>Description</h1>
-
+        {isLoading ? (
+          
+          <div id="infoLoadingDiv">
+                <img id='infoLoadingGif' src={loadingImg}></img>
           </div>
+          
+        
+        
+        
+        
+        ) :
+        
+        <div className="addInfoMainDiv">
 
-            <div className='recordList'>
-                {records.map((record, index) => (
-                  <Record key={index} record={record} removeRecord={removeRecord} index={index} removeFromTotal={removeFromTotal}/>))}
+          <div className='addInfoDiv'>
+
+            <h1 id="addInfoDate">{daysOfWeek[dayIndex]} {months[displayedMonth]} {displayedDay}, {displayedYear}</h1>
+
+            <AddEntry onAddRecord={addRecord} addToTotal={addToTotal}/>
+
+            <div id="entryTitleDiv">
+              <h1 id='valueEntry'>Value</h1>
+              <h1 id='descriptionEntry'>Description</h1>
+
             </div>
 
-          <div id="newDailyBalanceDiv">
-            <h1 id="newTotalBalance">Total: {total >= 0 ? "+$" + total.toFixed(2): "-$" + Math.abs(total).toFixed(2)}</h1>
-            <h1 id="newDailyBalance">New Daily Balance: $45</h1>
+              <div className='recordList'>
+                  {records.map((record, index) => (
+                    <Record key={index} record={record} removeRecord={removeRecord} index={index} removeFromTotal={removeFromTotal}/>))}
+              </div>
+
+            <div id="newDailyBalanceDiv">
+              <h1 id="newTotalBalance">Total: {total >= 0 ? "+$" + total.toFixed(2): "-$" + Math.abs(total).toFixed(2)}</h1>
+              <h1 id="newDailyBalance">New Daily Balance: $45</h1>
+
+            </div>
+
+            <div className='allButtonsDiv'>
+
+                <div className='saveCancelButtons'>
+                  <button id='saveButton' className='addInfoButtons' onClick={savePressed}>Save</button>
+                  <button id='cancelButton' className='addInfoButtons' onClick={cancelPressed}>Cancel</button>
+                </div>
+              
+                
+
+            </div> 
+
+        
 
           </div>
 
-          <div className='allButtonsDiv'>
-
-              <div className='saveCancelButtons'>
-                <button id='saveButton' className='addInfoButtons' onClick={savePressed}>Save</button>
-                <button id='cancelButton' className='addInfoButtons' onClick={cancelPressed}>Cancel</button>
-              </div>
-             
-              
-
-          </div> 
-
-       
-
-        </div>
-
-      
-
-  
         
-        
+
+    
           
-         
-      </div>
+          
+            
+          
+        </div>
+        
+        
+        }
+      
+        
+
+      </>
     );
   }
   
