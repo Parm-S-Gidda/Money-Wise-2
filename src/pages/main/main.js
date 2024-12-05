@@ -5,7 +5,7 @@ import DayTitle from './components/dayTitle';
 import Months from './components/months';
 import React, { useState, useEffect  } from 'react';
 import AddInfo from './components/addInfo';
-import { collection, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, collection, setDoc, getDocs, deleteDoc, query, getDoc, where, documentId} from "firebase/firestore"; 
 import { db } from '../../config/firestore';
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -26,23 +26,30 @@ function Main() {
   const [displayedDay, setDisplayedDay] = useState(1);
   const [isFlex, setIsFlex] = useState(false);
   const [clickedDayKey, setClickedDayKey] = useState(1);
+  const [dayBalanceHash, setDayBalanceHash] = useState( new Map());
+  const [loadDay, setLoadDay] = useState(false)
+
+
 
 
   useEffect(() => {
 
- 
+    
+  
     const firstDay = new Date(months[displayedMonth] + ' 1, ' + displayedYear).getDay();
     const daysInMonth = new Date(displayedYear, displayedMonth + 1, 0).getDate();
-
+    let startEpoch = Math.floor(Date.UTC(displayedYear, displayedMonth, 1, 0, 0, 0) / 1000);
     let newFullMonth = [];
 
-
+ 
 
 
     for (let i = 1; i <= firstDay + daysInMonth; i++) {
+
       if (i <= firstDay) {
         newFullMonth.push(<Day key={i} dayType={"PlaceHolder"} />);
-      } else {
+      } 
+      else {
         const realDayVal = i - firstDay;
         setDisplayedDay(realDayVal)
 
@@ -52,35 +59,92 @@ function Main() {
           setClickedDayKey(realDayVal)
         };
 
-        if(realDayVal % 3 == 0){
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={100} onClick={() => handleDayClick()}/>);
-        }
-        else if(realDayVal % 2 == 0){
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} balance={-100} onClick={() => handleDayClick()}/>);
-        }
-        else{
-          newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={100} onClick={() => handleDayClick()}/>);
-        }
+          let dayBalance = dayBalanceHash.get(startEpoch) || 0;
+
+          if(dayBalance >= 0){
+            
         
+            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={dayBalance} onClick={() => handleDayClick()}/>);
+          }
+          else{
+            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} balance={dayBalance} onClick={() => handleDayClick()}/>);
+          }
+
+          startEpoch += 86400;
+      
+  
       }
     }
 
+ 
+
     setDisplayedFullMonth(newFullMonth)
-    test()
+   
 
     
-  }, [displayedMonth, displayedYear]);
+  }, [dayBalanceHash, loadDay]);
 
-  const test = async () => {
+  useEffect(() => {
+  
+    getAllDays();
+  }, []);
 
-    const querySnapshot = await getDocs(collection(db, "users"));
-    querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
-});
+  useEffect(() => {
+  
+    getAllDays();
+  }, [displayedMonth]);
+
+
+  async function getAllDays(){
+
+
+
+  const daysInMonth = new Date(displayedYear, displayedMonth + 1, 0).getDate();
+  const startEpoch = Math.floor(Date.UTC(displayedYear, displayedMonth, 1, 0, 0, 0) / 1000);
+  const endEpoch = Math.floor(Date.UTC(displayedYear, displayedMonth, daysInMonth, 0, 0, 0) / 1000);
+
+  console.log("start: " + startEpoch)
+  console.log("end: " + endEpoch)
+
+    const datesCollection = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates");
+
+    const dateQuery = query(
+      datesCollection,
+      where(documentId(), ">=", startEpoch.toString()),
+      where(documentId(), "<=", endEpoch.toString())
+    );
+
+    const monthQuery = await getDocs(dateQuery);
+
+
+
+    let currentEpochDay = startEpoch
+
+    const dateBalanceMap = new Map();
+
+    monthQuery.forEach(doc => {
+
+      const data = doc.data();
+
+      if (data.entriesSum) {
+
+        console.log("id: " + doc.id + " bal: " + data.entriesSum)
+        
+
+        dateBalanceMap.set(parseInt(doc.id), data.entriesSum);
+     
+      }
+
+      currentEpochDay += 86400;
+    });
+
+    setDayBalanceHash(dateBalanceMap);
+
 
 
   }
+
+
 
   const handleDayClick = () => {
  
@@ -89,6 +153,8 @@ function Main() {
 
   const handleCancledClicked = () => {
     setIsFlex(false);
+
+    getAllDays();
   };
 
   //go to next month
@@ -103,6 +169,8 @@ function Main() {
       
       return prevMonth + 1;
     });
+
+    
   };
 
 
@@ -117,6 +185,8 @@ function Main() {
 
       return prevMonth - 1;
     });
+
+    
   };
 
 

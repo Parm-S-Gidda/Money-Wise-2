@@ -27,7 +27,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
     if(isFlex){
       getEntries();
-      console.log("Fetching Entries")
+     
     }
 
   }, [displayedDay, isFlex]);
