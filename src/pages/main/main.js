@@ -7,6 +7,7 @@ import React, { useState, useEffect  } from 'react';
 import AddInfo from './components/addInfo';
 import { getFirestore, doc, collection, setDoc, getDocs, deleteDoc, query, getDoc, where, documentId} from "firebase/firestore"; 
 import { db } from '../../config/firestore';
+import loadingImg from '../../images/loading.gif'
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
@@ -23,11 +24,10 @@ function Main() {
   const [displayedYear, setDisplayedYear] = useState(todayYear);
   const [displayedMonth, setDisplayedMonth] = useState(todayMonth);
   const [displayedFullMonth, setDisplayedFullMonth] = useState([]);
-  const [displayedDay, setDisplayedDay] = useState(1);
   const [isFlex, setIsFlex] = useState(false);
   const [clickedDayKey, setClickedDayKey] = useState(1);
   const [dayBalanceHash, setDayBalanceHash] = useState( new Map());
-  const [loadDay, setLoadDay] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -51,7 +51,7 @@ function Main() {
       } 
       else {
         const realDayVal = i - firstDay;
-        setDisplayedDay(realDayVal)
+     
 
         const handleDayClick = () => {
  
@@ -77,12 +77,12 @@ function Main() {
     }
 
  
-
+    setIsLoading(false);
     setDisplayedFullMonth(newFullMonth)
    
 
     
-  }, [dayBalanceHash, loadDay]);
+  }, [dayBalanceHash]);
 
   useEffect(() => {
   
@@ -97,7 +97,7 @@ function Main() {
 
   async function getAllDays(){
 
-
+  setIsLoading(true);
 
   const daysInMonth = new Date(displayedYear, displayedMonth + 1, 0).getDate();
   const startEpoch = Math.floor(Date.UTC(displayedYear, displayedMonth, 1, 0, 0, 0) / 1000);
@@ -198,8 +198,19 @@ function Main() {
         <Months previousMonth={decreaseMonth} nextMonth={increaseMonth} displayedMonth={displayedMonth} displayedYear={displayedYear}/>
         <DayTitle />
 
+        {isLoading ? (
+
+
+          <div className='monthLoadingDiv'>
+                <img id='infoLoadingGif' src={loadingImg}></img>
+          </div>
+
+
+        ) : (
 
         <div className="allDays">{displayedFullMonth}</div>
+
+        )}
 
         <div className='background' style={{ display: isFlex ? 'flex' : 'none' }} onClick={() => {if (!isFlex) handleDayClick(); }}>
 

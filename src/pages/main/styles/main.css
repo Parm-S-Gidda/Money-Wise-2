@@ -38,4 +38,17 @@
     display: none;
   }
 
-  
+  .monthLoadingDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40%;
+    width: 60%;
+ 
+  }
+
+  #infoLoadingGif{
+    height: 50%;
+    aspect-ratio: 1 / 1;
+    opacity: 25%;
+  }
