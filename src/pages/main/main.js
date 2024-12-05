@@ -202,7 +202,7 @@ function Main() {
 
 
           <div className='monthLoadingDiv'>
-                <img id='infoLoadingGif' src={loadingImg}></img>
+                <h1>Loading...</h1>
           </div>
 
 

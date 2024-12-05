@@ -47,8 +47,8 @@
  
   }
 
-  #infoLoadingGif{
-    height: 50%;
+  #mainLoadingGif{
+    height: 15%;
     aspect-ratio: 1 / 1;
     opacity: 25%;
   }
