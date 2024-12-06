@@ -30,7 +30,7 @@ function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [previousMonthBalance, setPreviousMonthBalance] = useState(0);
  const [eachSummed, setEachSummed] = useState([]);
-
+ const [numberOfEntriesMap, setNumberOfEntriesMap] = useState(new Map());
 
 
 
@@ -48,9 +48,9 @@ function Main() {
 
 
 
-    setEachSummed((prevList) => [...prevList, startBalance]);
 
 
+    let tempEachSum = [startBalance]
 
 
     for (let i = 1; i <= firstDay + daysInMonth; i++) {
@@ -73,19 +73,32 @@ function Main() {
 
           let dayBalance = dayBalanceHash.get(startEpoch) || 0;
 
+          let numberOfEntries = numberOfEntriesMap.get(startEpoch) || 0;
+
+       
+
+          let hasEntries = false;
+
+          if(numberOfEntries > 0){
+
+        
+            hasEntries = true;
+          }
+
           startBalance += dayBalance;
 
           startBalance = parseFloat(startBalance.toFixed(2))
 
-          setEachSummed((prevList) => [...prevList, startBalance]);
+
+          tempEachSum.push(startBalance)
 
           if(startBalance >= 0){
             
         
-            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={startBalance} onClick={() => handleDayClick()}/>);
+            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} hasEntries={hasEntries} balance={startBalance} onClick={() => handleDayClick()}/>);
           }
           else{
-            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} balance={startBalance} onClick={() => handleDayClick()}/>);
+            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} hasEntries={hasEntries} balance={startBalance} onClick={() => handleDayClick()}/>);
           }
 
           startEpoch += 86400;
@@ -93,6 +106,10 @@ function Main() {
   
       }
     }
+
+ 
+    setEachSummed(tempEachSum)
+
 
  
     setIsLoading(false);
@@ -136,6 +153,7 @@ function Main() {
     const allPreviousBalances = await getDocs(previousBalanceQuery);
 
     let previousMonthsTotalBalance = 0;
+    
 
     allPreviousBalances.forEach(doc => {
 
@@ -147,11 +165,12 @@ function Main() {
         
       }
 
+
     });
 
     setPreviousMonthBalance(previousMonthsTotalBalance);
 
-    console.log("previous balance: " + previousMonthsTotalBalance)
+    
 
 
 
@@ -170,6 +189,7 @@ function Main() {
    
 
     const dateBalanceMap = new Map();
+    const tempnumberOfEntriesMap = new Map();
 
     monthQuery.forEach(doc => {
 
@@ -179,15 +199,26 @@ function Main() {
 
     
         dateBalanceMap.set(parseInt(doc.id), data.entriesSum);
+
+
      
       }
+
+      if (data.amountOfEntries){
+
+   
+
+        tempnumberOfEntriesMap.set(parseInt(doc.id), data.amountOfEntries);
+      }
+
 
   
     });
 
  
-
+    setNumberOfEntriesMap(tempnumberOfEntriesMap);
     setDayBalanceHash(dateBalanceMap);
+    
 
 
 

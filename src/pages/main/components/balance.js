@@ -5,6 +5,8 @@ import React, { useState, useEffect  } from 'react';
 
 function Balance({posNeg, balance, hasEntries}) {
 
+ 
+
     const [displayBalance, setDisplayBalance] = useState("+$0");
 
     useEffect(() => {

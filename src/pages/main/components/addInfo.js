@@ -21,6 +21,8 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
   const [addList, setAddList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dailyBalance, setDailyBalance] = useState(0);
+  
+  const [recordTotal, setRecordTotal] = useState(0);
 
 
   let epochDate = Math.floor(Date.UTC(displayedYear, displayedMonth, displayedDay, 0, 0, 0) / 1000);
@@ -37,6 +39,8 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
   async function getEntries(){
 
+
+
     const entriesRef = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries");
     const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
 
@@ -45,6 +49,15 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
     if(date.exists()){
 
       setTotal(date.data().entriesSum);
+      setRecordTotal(date.data().amountOfEntries); 
+      
+   
+      setDailyBalance(date.data().entriesSum + dailyStartBalance);
+
+    }
+    else{
+      setDailyBalance(dailyStartBalance);
+      setRecordTotal(0);
     }
 
     const q = query(entriesRef);
@@ -54,7 +67,6 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
       const entries = querySnapshot.docs.map(doc => doc.data()); 
 
       setRecords(entries);
-      console.log(entries); 
       setIsLoading(false)
   
       
@@ -63,7 +75,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
       console.error("Error fetching entries: ", error);
     }
 
-    setDailyBalance(total + dailyStartBalance);
+
 
 
   }
@@ -135,6 +147,8 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
   async function saveEntriesToDB() {
     const entriesRef = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries");
   
+
+
     //add the sum of all the entries to the date
     const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
     await setDoc(dateRef, {
@@ -163,11 +177,14 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
   async function removeEntriesFromDB() {
 
+
+
     //add the sum of all the entries to the date 
     const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
 
     await setDoc(dateRef, {
       entriesSum: total,  
+      amountOfEntries: (recordTotal + addList.length - removeList.length),
     }, { merge: true }) 
     .catch((error) => {
       console.error("Error adding Entry Sum document: ", error);

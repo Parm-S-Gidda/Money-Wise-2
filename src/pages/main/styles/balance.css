@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 10%;
+    bottom: 8%;
     
  
     
@@ -25,9 +25,11 @@
 .balanceRealPositive{
 
     font-size: clamp(0.1vw, 0.4vw, 1rem);
-    background-color: rgb(134, 221, 134);
-    border-radius: 30px;
-    width: 85%;
+    background-color: rgb(255, 255, 255);
+    color: rgb(105, 104, 104);
+    border-radius: 40px;
+  
+    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,9 +43,10 @@
 .balanceRealNegative{
 
     font-size: clamp(0.1vw, 0.4vw, 1rem);
-    background-color: rgb(213, 101, 101);
-    border-radius: 30px;
-    width: 85%;
+    background-color: rgb(255, 255, 255);
+    color: rgb(105, 104, 104);
+    border-radius: 40px;;
+    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
