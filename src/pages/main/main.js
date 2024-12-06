@@ -28,6 +28,9 @@ function Main() {
   const [clickedDayKey, setClickedDayKey] = useState(1);
   const [dayBalanceHash, setDayBalanceHash] = useState( new Map());
   const [isLoading, setIsLoading] = useState(false);
+  const [previousMonthBalance, setPreviousMonthBalance] = useState(0);
+ const [eachSummed, setEachSummed] = useState([]);
+
 
 
 
@@ -41,7 +44,13 @@ function Main() {
     let startEpoch = Math.floor(Date.UTC(displayedYear, displayedMonth, 1, 0, 0, 0) / 1000);
     let newFullMonth = [];
 
- 
+    let startBalance = previousMonthBalance;
+
+
+
+    setEachSummed((prevList) => [...prevList, startBalance]);
+
+
 
 
     for (let i = 1; i <= firstDay + daysInMonth; i++) {
@@ -57,17 +66,26 @@ function Main() {
  
           setIsFlex((prevIsFlex) => !prevIsFlex);
           setClickedDayKey(realDayVal)
+          
         };
+
+
 
           let dayBalance = dayBalanceHash.get(startEpoch) || 0;
 
-          if(dayBalance >= 0){
+          startBalance += dayBalance;
+
+          startBalance = parseFloat(startBalance.toFixed(2))
+
+          setEachSummed((prevList) => [...prevList, startBalance]);
+
+          if(startBalance >= 0){
             
         
-            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={dayBalance} onClick={() => handleDayClick()}/>);
+            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={""} balance={startBalance} onClick={() => handleDayClick()}/>);
           }
           else{
-            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} balance={dayBalance} onClick={() => handleDayClick()}/>);
+            newFullMonth.push(<Day key={i} dayType={"RealDay"} date={realDayVal} todayDay={todayDay} todayMonth={todayMonth} todayYear={todayYear} currentMonth={displayedMonth} currentYear={displayedYear} posNeg={"Negative"} balance={startBalance} onClick={() => handleDayClick()}/>);
           }
 
           startEpoch += 86400;
@@ -84,6 +102,8 @@ function Main() {
     
   }, [dayBalanceHash]);
 
+
+
   useEffect(() => {
   
     getAllDays();
@@ -97,16 +117,43 @@ function Main() {
 
   async function getAllDays(){
 
+  setEachSummed([]);
+
   setIsLoading(true);
 
   const daysInMonth = new Date(displayedYear, displayedMonth + 1, 0).getDate();
   const startEpoch = Math.floor(Date.UTC(displayedYear, displayedMonth, 1, 0, 0, 0) / 1000);
   const endEpoch = Math.floor(Date.UTC(displayedYear, displayedMonth, daysInMonth, 0, 0, 0) / 1000);
 
-  console.log("start: " + startEpoch)
-  console.log("end: " + endEpoch)
+
 
     const datesCollection = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates");
+
+    const previousBalanceQuery = query(datesCollection, 
+      where(documentId(), "<", startEpoch.toString())
+    );
+
+    const allPreviousBalances = await getDocs(previousBalanceQuery);
+
+    let previousMonthsTotalBalance = 0;
+
+    allPreviousBalances.forEach(doc => {
+
+      const data = doc.data();
+
+      if (data.entriesSum) {
+
+        previousMonthsTotalBalance += data.entriesSum
+        
+      }
+
+    });
+
+    setPreviousMonthBalance(previousMonthsTotalBalance);
+
+    console.log("previous balance: " + previousMonthsTotalBalance)
+
+
 
     const dateQuery = query(
       datesCollection,
@@ -116,9 +163,11 @@ function Main() {
 
     const monthQuery = await getDocs(dateQuery);
 
+    
 
 
-    let currentEpochDay = startEpoch
+
+   
 
     const dateBalanceMap = new Map();
 
@@ -128,15 +177,15 @@ function Main() {
 
       if (data.entriesSum) {
 
-        console.log("id: " + doc.id + " bal: " + data.entriesSum)
-        
-
+    
         dateBalanceMap.set(parseInt(doc.id), data.entriesSum);
      
       }
 
-      currentEpochDay += 86400;
+  
     });
+
+ 
 
     setDayBalanceHash(dateBalanceMap);
 
@@ -148,17 +197,24 @@ function Main() {
 
   const handleDayClick = () => {
  
+
     setIsFlex((prevIsFlex) => !prevIsFlex);
+
+    
   };
 
   const handleCancledClicked = () => {
     setIsFlex(false);
-
+   
     getAllDays();
+
+
   };
 
   //go to next month
   const increaseMonth = () => {
+
+   
 
     setDisplayedMonth((prevMonth) => {
       if (prevMonth === 11) {
@@ -176,6 +232,8 @@ function Main() {
 
   //go to previous month
   const decreaseMonth = () => {
+
+   
 
     setDisplayedMonth((prevMonth) => {
       if (prevMonth === 0) {
@@ -214,7 +272,7 @@ function Main() {
 
         <div className='background' style={{ display: isFlex ? 'flex' : 'none' }} onClick={() => {if (!isFlex) handleDayClick(); }}>
 
-          <AddInfo displayedDay={clickedDayKey} displayedMonth={displayedMonth} displayedYear={displayedYear} isFlex={isFlex} cancleClicked={handleCancledClicked} />
+          <AddInfo displayedDay={clickedDayKey} dailyStartBalance = {eachSummed[clickedDayKey-1]} displayedMonth={displayedMonth} displayedYear={displayedYear} isFlex={isFlex} cancleClicked={handleCancledClicked} />
         </div>
 
         

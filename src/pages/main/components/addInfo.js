@@ -10,7 +10,7 @@ const months = ["January","February", "March","April","May","June","July","Augus
 
 
 
-function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, isFlex}) {
+function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, isFlex, dailyStartBalance}) {
 
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const date = new Date(displayedYear, displayedMonth, displayedDay);
@@ -20,6 +20,8 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
   const [removeList, setRemoveList] = useState([]);
   const [addList, setAddList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [dailyBalance, setDailyBalance] = useState(0);
+
 
   let epochDate = Math.floor(Date.UTC(displayedYear, displayedMonth, displayedDay, 0, 0, 0) / 1000);
 
@@ -27,6 +29,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
     if(isFlex){
       getEntries();
+
      
     }
 
@@ -60,6 +63,9 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
       console.error("Error fetching entries: ", error);
     }
 
+    setDailyBalance(total + dailyStartBalance);
+
+
   }
   
  
@@ -68,6 +74,8 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
     setRecords((prevRecords) => [...prevRecords, newRecord]);
 
     setAddList((prevList) => [...prevList, newRecord]);
+
+    
   
   };
 
@@ -83,11 +91,15 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
   const addToTotal = (newAmount) => {
 
     setTotal(prevTotal => prevTotal + newAmount);
+
+    setDailyBalance(prevDailyBalance => prevDailyBalance + newAmount);
   };
 
   const removeFromTotal = (newAmount) => {
 
     setTotal(prevTotal => prevTotal - newAmount);
+
+    setDailyBalance(prevDailyBalance => prevDailyBalance - newAmount);
    
   };
 
@@ -219,7 +231,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
             <div id="newDailyBalanceDiv">
               <h1 id="newTotalBalance">Total: {total >= 0 ? "+$" + total.toFixed(2): "-$" + Math.abs(total).toFixed(2)}</h1>
-              <h1 id="newDailyBalance">New Daily Balance: $45</h1>
+              <h1 id="newDailyBalance">New Daily Balance: {dailyBalance >= 0 ? "+$" + dailyBalance.toFixed(2): "-$" + Math.abs(dailyBalance).toFixed(2)}</h1>
 
             </div>
 
