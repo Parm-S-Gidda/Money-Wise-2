@@ -116,7 +116,7 @@ function SignUp() {
 
             </div>
 
-            <div id='createAccountDiv'>
+            <div id='createAccountDiv2'>
 
                 <h1 className='mainTitle'>Log In</h1>
                 <h2 className='subText'>Sign in if you already have an account </h2>

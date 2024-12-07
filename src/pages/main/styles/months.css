@@ -7,6 +7,17 @@
     padding-bottom: 20px;
 }
 
+@media (max-width:480px){
+
+    .monthsTitleDiv{
+
+      width: 95%;
+      gap: 5px;
+    }
+
+
+  }
+
 .monthsYear{
     margin: 0;
     padding: 0;

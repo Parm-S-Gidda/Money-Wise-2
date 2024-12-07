@@ -25,7 +25,9 @@
     max-width: 1000px;
 }
 
-#createAccountDiv{
+
+
+#createAccountDiv2{
     background-color: rgb(222, 218, 209);
     height: 100%;
     width: 50%;
@@ -39,6 +41,8 @@
     color:white;
     
 }
+
+
 
 #signInSideDiv{
  
@@ -207,4 +211,35 @@
     padding-left: 10px;
     padding-top: 15px;
 }
+
+
+@media (max-width:480px){
+
+    .loginCentreDiv{
+
+      flex-direction: column;
+    }
+
+    #createAccountDiv2{
+
+        
+        width: 100%;
+       
+    }
+
+    #nameSignupInput, #emailInputSignUp, #passwordInputSignUp{
+        width: 100%;
+    }
+
+    #signInSideDiv{
+        width: 100%;
+    }
+
+    #inputDiv{
+        
+        width: 90%;
+    }
+
+
+  }
 

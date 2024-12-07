@@ -172,3 +172,28 @@
     border: solid 4px rgb(222, 218, 209);;
 }
 
+@media (max-width:480px){
+
+    .loginCentreDiv{
+
+      flex-direction: column;
+    }
+
+    #createAccountDiv{
+
+        
+        width: 100%;
+       
+    }
+
+    #emailInputSignIn, #passwordInputSignIn{
+        width: 90%;
+    }
+
+    #signInSideDiv{
+        width: 100%;
+    }
+
+
+  }
+

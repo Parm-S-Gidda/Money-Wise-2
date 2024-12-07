@@ -24,6 +24,17 @@
  
   }
 
+  @media (max-width:480px){
+
+    .allDays{
+
+      width: 95%;
+      gap: 5px;
+    }
+
+
+  }
+
   * {
     box-sizing: border-box;
   }
