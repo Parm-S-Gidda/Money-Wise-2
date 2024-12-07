@@ -17,7 +17,8 @@
     justify-content: space-evenly;
     align-items: center;
     width: 80%;
-    height: 50%;
+    height: fit-content;
+    
     border-radius: 50px;
     background-color: white;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
@@ -29,6 +30,7 @@
     height: 100%;
     width: 50%;
     border-radius: 50px;
+    padding: 10% 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,6 +44,7 @@
  
     height: 100%;
     width: 50%;
+    padding: 10% 0;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
     display: flex;
@@ -80,6 +83,8 @@
 
 }
 
+
+
 #signInButtonSignUp:hover{
 
     background-color: white;
@@ -112,6 +117,7 @@
     font-size: 1.2rem;
     border: none;
     color: white;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 #passwordInputSignUp:focus, #emailInputSignUp:focus, #nameSignupInput:focus{
@@ -121,7 +127,7 @@
 
 #passwordInputSignUp{
 
-   
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     border: none;
     background-color: rgb(222, 218, 209);
@@ -146,6 +152,7 @@
     font-size: 1.2rem;
     border: none;
     color: white;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 #emailInputSignUp::placeholder,
@@ -179,6 +186,7 @@
     color: white;
     font-weight: 900;
     margin-top: 5%;
+    
 }
 
 #signInButton:hover{

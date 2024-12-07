@@ -8,6 +8,9 @@ import AddInfo from './components/addInfo';
 import { getFirestore, doc, collection, setDoc, getDocs, deleteDoc, query, getDoc, where, documentId} from "firebase/firestore"; 
 import { db } from '../../config/firestore';
 import loadingImg from '../../images/loading.gif'
+import { signOut, onAuthStateChanged  } from "firebase/auth";
+import { auth } from '../../config/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
@@ -15,7 +18,7 @@ const months = ["January","February", "March","April","May","June","July","Augus
 function Main() {
 
  
-
+  const navigate = useNavigate();
   const todayDate = new Date();
   const todayDay = todayDate.getDate();
   const todayMonth = todayDate.getMonth();
@@ -134,6 +137,19 @@ function Main() {
 
   async function getAllDays(){
 
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        
+        console.log("user is signed in ")
+       
+    
+      } else {
+        console.log("user is signed out ")
+        navigate('/signup');
+      }
+    });
+
   setEachSummed([]);
 
   setIsLoading(true);
@@ -144,7 +160,7 @@ function Main() {
 
 
 
-    const datesCollection = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates");
+    const datesCollection = collection(db, "users", auth.currentUser.uid, "dates");
 
     const previousBalanceQuery = query(datesCollection, 
       where(documentId(), "<", startEpoch.toString())

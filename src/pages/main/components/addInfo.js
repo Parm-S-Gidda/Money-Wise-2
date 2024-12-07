@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../../config/firestore';
 import { getFirestore, doc, collection, setDoc, getDocs, deleteDoc, query, getDoc} from "firebase/firestore"; 
 import loadingImg from '../../../images/loading.gif'
-
+import { auth } from '../../../config/firestore';
 const months = ["January","February", "March","April","May","June","July","August","September","October","November","December"];
 
 
@@ -41,7 +41,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
 
 
-    const entriesRef = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries");
+    const entriesRef = collection(db, "users", auth.currentUser.uid, "dates", epochDate.toString(), "entries");
     const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
 
     const date = await getDoc(dateRef);
@@ -145,12 +145,12 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
   }
 
   async function saveEntriesToDB() {
-    const entriesRef = collection(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries");
+    const entriesRef = collection(db, "users", auth.currentUser.uid, "dates", epochDate.toString(), "entries");
   
 
 
     //add the sum of all the entries to the date
-    const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
+    const dateRef = doc(db, "users", auth.currentUser.uid, "dates", epochDate.toString());
     await setDoc(dateRef, {
       entriesSum: total,  
     }, { merge: true }) 
@@ -180,7 +180,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
 
     //add the sum of all the entries to the date 
-    const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
+    const dateRef = doc(db, "users", auth.currentUser.uid, "dates", epochDate.toString());
 
     await setDoc(dateRef, {
       entriesSum: total,  
@@ -194,7 +194,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
     //remove the entries from the date
     for (const timeAdded of removeList) {
 
-      let entryRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString(), "entries", timeAdded.toString());
+      let entryRef = doc(db, "users", auth.currentUser.uid, "dates", epochDate.toString(), "entries", timeAdded.toString());
       console.log("Imd deleting on this Day: " + epochDate + " at thsi time: " + timeAdded )
       
       try {
