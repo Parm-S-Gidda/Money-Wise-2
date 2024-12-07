@@ -42,7 +42,7 @@ function AddInfo({displayedDay, displayedMonth, displayedYear, cancleClicked, is
 
 
     const entriesRef = collection(db, "users", auth.currentUser.uid, "dates", epochDate.toString(), "entries");
-    const dateRef = doc(db, "users", "YhdHXK0HiGPw0ClC1Ste", "dates", epochDate.toString());
+    const dateRef = doc(db, "users", auth.currentUser.uid, "dates", epochDate.toString());
 
     const date = await getDoc(dateRef);
 
